@@ -3,7 +3,7 @@
 Controlla il gioco del Tetris usando i gesti delle mani attraverso la webcam! Il progetto utilizza:
 
 - **MediaPipe + OpenCV** per tracciare la mano
-- **Scikit-learn** per riconoscere 3 gesti statici: 🥊 pugno, ✋ mano aperta, 👆 "L"
+- **Scikit-learn** per riconoscere 3 gesti statici: 🥊 pugno, 👌 "Ok", 👆 "L"
 - **Pygame** per visualizzare il Tetris e gestire input simulati
 
 ## 📁 Struttura del Progetto
@@ -39,7 +39,7 @@ pip install mediapipe opencv-python pygame scikit-learn numpy joblib pandas
 
 Avvia la raccolta e premi:
 - `p` → pugno
-- `o` → mano aperta
+- `o` → gesto "Ok"
 - `l` → gesto "L"
 - `q` → per uscire
 
@@ -70,14 +70,14 @@ python main.py
 
 ## 🖐️ Gesti Riconosciuti
 
-| Tipo       | Gesto                  | Azione in gioco          |
-|------------|------------------------|---------------------------|
-| Dinamico   | Mano → sinistra        | Sposta blocco a sinistra |
-| Dinamico   | Mano → destra          | Sposta blocco a destra   |
-| Dinamico   | Mano → giù             | Fa scendere il blocco    |
-| Statico ML | ✊ Pugno                | Pausa                    |
-| Statico ML | ✋ Mano aperta (5 dita) | Ruota antiorario         |
-| Statico ML | 👆 "L" (indice+pollice) | Ruota orario             |
+| Tipo       | Gesto                    | Azione in gioco          |
+|------------|--------------------------|--------------------------|
+| Dinamico   | Mano → sinistra          | Sposta blocco a sinistra |
+| Dinamico   | Mano → destra            | Sposta blocco a destra   |
+| Dinamico   | Mano → giù               | Fa scendere il blocco    |
+| Statico ML | ✊ Pugno                 | Pausa                    |
+| Statico ML | ✋ "Ok" (indice+pollice) | Ruota antiorario         |
+| Statico ML | 👆 "L" (indice+pollice)  | Ruota orario             |
 
 ## 🎮 Tasti Mappati
 
@@ -87,7 +87,7 @@ python main.py
 | Destra       | `pygame.K_RIGHT` / `d` |
 | Giù          | `pygame.K_DOWN` / `s` |
 | Pugno        | `p` (pausa)           |
-| Mano aperta  | `q` (ruota ⟲)         |
+| Ok           | `q` (ruota ⟲)         |
 | L            | `e` (ruota ⟳)         |
 
 ## 👨‍💻 Compatibilità

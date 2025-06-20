@@ -31,7 +31,7 @@ GESTURE_KEYMAP = {
     "DESTRA": pygame.K_RIGHT,
     "GIÙ": pygame.K_DOWN,
     "pugno": ord('p'),
-    "mano_aperta": ord('q'),
+    "Ok": ord('q'),
     "L": ord('e')
 }
 

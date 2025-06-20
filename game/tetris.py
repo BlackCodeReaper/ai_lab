@@ -162,7 +162,7 @@ class Tetris:
                     self.rotate(clockwise=False)
                 elif event.key == ord('e'):
                     self.rotate(clockwise=True)
-                elif event.key == ord('p'):
+                elif event.key == pygame.K_ESCAPE or event.key == ord('p'):
                     self.toggle_pause()
 
         if not self.check_collision(dy=1):

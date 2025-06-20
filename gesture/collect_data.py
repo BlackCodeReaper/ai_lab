@@ -11,7 +11,7 @@ mp_hands = mp.solutions.hands
 # Mapping tasti → etichette
 LABELS = {
     ord('p'): "pugno",
-    ord('o'): "mano_aperta",
+    ord('o'): "Ok",
     ord('l'): "L"
 }
 
@@ -37,7 +37,7 @@ def main():
                 header += [f"x{i}", f"y{i}", f"z{i}"]
             writer.writerow(header)
 
-        print("Premi 'p' (pugno), 'o' (aperta), 'l' (L) per salvare il gesto. Premi 'q' per uscire.")
+        print("Premi 'p' (pugno), 'o' (Ok), 'l' (L) per salvare il gesto. Premi 'q' per uscire.")
         while True:
             ret, frame = cap.read()
             if not ret:

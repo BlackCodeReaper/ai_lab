@@ -66,8 +66,7 @@ class Tetromino:
 class Tetris:
     def __init__(self):
         pygame.init()
-        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-        pygame.display.set_caption("Tetris - Gesture Control")
+        self.screen = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.clock = pygame.time.Clock()
         self.grid = [[BLACK for _ in range(GRID_WIDTH)] for _ in range(GRID_HEIGHT)]
         self.current_piece = self.new_piece()
@@ -147,33 +146,35 @@ class Tetris:
                     pygame.draw.rect(self.screen, GRAY, (px, py, BLOCK_SIZE, BLOCK_SIZE), 1)
 
     def run_frame(self, key_events):
-        if self.game_over or self.paused:
+        if self.game_over:
             return
 
         for event in key_events:
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT or event.key == ord('a'):
-                    self.move(-1, 0)
-                elif event.key == pygame.K_RIGHT or event.key == ord('d'):
-                    self.move(1, 0)
-                elif event.key == pygame.K_DOWN or event.key == ord('s'):
-                    self.move(0, 1)
-                elif event.key == ord('q'):
-                    self.rotate(clockwise=False)
-                elif event.key == ord('e'):
-                    self.rotate(clockwise=True)
-                elif event.key == pygame.K_ESCAPE or event.key == ord('p'):
+                if event.key == pygame.K_ESCAPE or event.key == ord('p'):
                     self.toggle_pause()
 
-        if not self.check_collision(dy=1):
-            self.current_piece.y += 1
-        else:
-            self.lock_piece()
+                if not self.paused:
+                    if event.key == pygame.K_LEFT or event.key == ord('a'):
+                        self.move(-1, 0)
+                    elif event.key == pygame.K_RIGHT or event.key == ord('d'):
+                        self.move(1, 0)
+                    elif event.key == pygame.K_DOWN or event.key == ord('s'):
+                        self.move(0, 1)
+                    elif event.key == ord('q'):
+                        self.rotate(clockwise=False)
+                    elif event.key == ord('e'):
+                        self.rotate(clockwise=True)
+
+        if not self.paused:
+            if not self.check_collision(dy=1):
+                self.current_piece.y += 1
+            else:
+                self.lock_piece()
 
     def draw(self):
         self.screen.fill(BLACK)
         self.draw_grid()
-        pygame.display.flip()
 
     def tick(self):
-        self.clock.tick(4)
+        self.clock.tick(2)

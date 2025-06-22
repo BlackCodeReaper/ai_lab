@@ -21,7 +21,7 @@ class GestureRecognizer:
         self.motion_buffer = deque(maxlen=motion_buffer)
         self.last_position = None
         self.last_gesture = None
-        self.cooldown = 0.5  # secondi
+        self.cooldown = 1.5  # secondi
         self.last_trigger_time = time.time()
 
     def predict_static_gesture(self, landmarks):
@@ -67,7 +67,7 @@ class GestureRecognizer:
 
             # dinamico
             wrist = lm.landmark[0]
-            gesture_movement = self.detect_motion(wrist.x, wrist.y)
+            gesture_movement = self.detect_motion(1 - wrist.x, wrist.y)
 
             # gestione cooldown
             now = time.time()

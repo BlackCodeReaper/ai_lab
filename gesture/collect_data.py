@@ -12,7 +12,8 @@ mp_hands = mp.solutions.hands
 LABELS = {
     ord('p'): "pugno",
     ord('o'): "Ok",
-    ord('l'): "L"
+    ord('l'): "L",
+    ord('n'): "nessuno"
 }
 
 OUTPUT_CSV = os.path.join("dataset", "gestures.csv")
@@ -37,7 +38,7 @@ def main():
                 header += [f"x{i}", f"y{i}", f"z{i}"]
             writer.writerow(header)
 
-        print("Premi 'p' (pugno), 'o' (Ok), 'l' (L) per salvare il gesto. Premi 'q' per uscire.")
+        print("Premi 'p' (pugno), 'o' (Ok), 'l' (L), 'n' (nessuno) per salvare il gesto. Premi 'q' per uscire.")
         while True:
             ret, frame = cap.read()
             if not ret:

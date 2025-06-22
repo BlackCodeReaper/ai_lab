@@ -4,13 +4,12 @@ import cv2
 import pygame
 from gesture.predict import GestureRecognizer
 from game.tetris import Tetris
-import os
 
 # Inizializza Pygame
 pygame.init()
 
 # Inizializza la webcam
-cam_width, cam_height = 640, 480
+cam_width, cam_height = 1280, 960
 cam = cv2.VideoCapture(0)
 cam.set(3, cam_width)
 cam.set(4, cam_height)
@@ -74,12 +73,13 @@ def main():
 
         # Esegui un frame del gioco
         tetris.run_frame(events)
+        tetris.draw()
 
         # Disegna tutto
         screen.fill((0, 0, 0))
         screen.blit(webcam_surface, (0, 0))
+        screen.blit(tetris.screen, (cam_width, 0))
         draw_overlay(screen, gesture)
-        tetris.draw()
         pygame.display.flip()
 
         tetris.tick()

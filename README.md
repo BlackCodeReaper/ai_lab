@@ -3,7 +3,7 @@
 Controlla il gioco del Tetris usando i gesti delle mani attraverso la webcam! Il progetto utilizza:
 
 - **MediaPipe + OpenCV** per tracciare la mano
-- **Scikit-learn** per riconoscere 3 gesti statici: 🥊 pugno, 👌 "Ok", 👆 "L"
+- **Scikit-learn** per riconoscere 4 gesti statici: 🥊 pugno, 👌 "Ok", 👆 "L", ✋ nessuno
 - **Pygame** per visualizzare il Tetris e gestire input simulati
 
 ## 📁 Struttura del Progetto
@@ -41,10 +41,11 @@ Avvia la raccolta e premi:
 - `p` → pugno
 - `o` → gesto "Ok"
 - `l` → gesto "L"
+- `n` → gesto "nessuno"
 - `q` → per uscire
 
 ```
-python gesture/collect_data.py
+python -m gesture/collect_data
 ```
 
 👉 Questo crea/aggiorna il file `dataset/gestures.csv`
@@ -54,7 +55,7 @@ python gesture/collect_data.py
 Assicurati di avere abbastanza esempi per ogni gesto (almeno 50–100).
 
 ```
-python gesture/train_model.py
+python -m gesture/train_model
 ```
 
 👉 Questo crea il file `model/gesture_model.pkl`
@@ -70,14 +71,15 @@ python main.py
 
 ## 🖐️ Gesti Riconosciuti
 
-| Tipo       | Gesto                    | Azione in gioco          |
-|------------|--------------------------|--------------------------|
-| Dinamico   | Mano → sinistra          | Sposta blocco a sinistra |
-| Dinamico   | Mano → destra            | Sposta blocco a destra   |
-| Dinamico   | Mano → giù               | Fa scendere il blocco    |
-| Statico ML | ✊ Pugno                 | Pausa                    |
-| Statico ML | ✋ "Ok" (indice+pollice) | Ruota antiorario         |
-| Statico ML | 👆 "L" (indice+pollice)  | Ruota orario             |
+| Tipo       | Gesto                      | Azione in gioco          |
+|------------|----------------------------|--------------------------|
+| Dinamico   | Mano → sinistra            | Sposta blocco a sinistra |
+| Dinamico   | Mano → destra              | Sposta blocco a destra   |
+| Dinamico   | Mano → giù                 | Fa scendere il blocco    |
+| Statico ML | ✊ Pugno                   | Pausa                    |
+| Statico ML | ✋ "Ok" (indice+pollice)   | Ruota antiorario         |
+| Statico ML | 👆 "L" (indice+pollice)    | Ruota orario             |
+| Statico ML | 👆 "nessuno" (mano aperta) | Niente                   |
 
 ## 🎮 Tasti Mappati
 

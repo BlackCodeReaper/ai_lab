@@ -32,10 +32,10 @@ def main():
     with open(OUTPUT_CSV, mode='a', newline='') as f:
         writer = csv.writer(f)
         if not file_exists:
-            # intestazione: label,x0,y0,z0,...,x20,y20,z20
+            # intestazione: label,x0,y0,...,x20,y20
             header = ["label"]
             for i in range(21):
-                header += [f"x{i}", f"y{i}", f"z{i}"]
+                header += [f"x{i}", f"y{i}"]
             writer.writerow(header)
 
         print("Premi 'p' (pugno), 'o' (Ok), 'l' (L), 'n' (nessuno) per salvare il gesto. Premi 'q' per uscire.")

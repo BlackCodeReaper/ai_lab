@@ -1,4 +1,4 @@
-# 🎮 Tetris con Gesti della Mano (Webcam + AI)
+# 🎮 Tetris con Gesti della Mano (Webcam + ML)
 
 Controlla il gioco del Tetris usando i gesti delle mani attraverso la webcam! Il progetto utilizza:
 
@@ -45,7 +45,7 @@ Avvia la raccolta e premi:
 - `q` → per uscire
 
 ```
-python -m gesture/collect_data
+python -m gesture.collect_data
 ```
 
 👉 Questo crea/aggiorna il file `dataset/gestures.csv`
@@ -55,7 +55,7 @@ python -m gesture/collect_data
 Assicurati di avere abbastanza esempi per ogni gesto (almeno 50–100).
 
 ```
-python -m gesture/train_model
+python -m gesture.train_model
 ```
 
 👉 Questo crea il file `model/gesture_model.pkl`

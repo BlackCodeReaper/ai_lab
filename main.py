@@ -9,10 +9,11 @@ from game.tetris import Tetris
 pygame.init()
 
 # Inizializza la webcam
-cam_width, cam_height = 1280, 960
+cam_width, cam_height = 800, 600
 cam = cv2.VideoCapture(0)
 cam.set(3, cam_width)
 cam.set(4, cam_height)
+cam.set(cv2.CAP_PROP_FPS, 24)
 
 # Inizializza Pygame display accanto alla webcam
 WIN_WIDTH = cam_width + 300

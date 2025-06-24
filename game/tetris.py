@@ -69,6 +69,8 @@ class Tetris:
         self.screen = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.clock = pygame.time.Clock()
         self.grid = [[BLACK for _ in range(GRID_WIDTH)] for _ in range(GRID_HEIGHT)]
+        self.drop_interval = 1000
+        self.last_drop_time = pygame.time.get_ticks()
         self.current_piece = self.new_piece()
         self.game_over = False
         self.paused = False
@@ -167,14 +169,17 @@ class Tetris:
                         self.rotate(clockwise=True)
 
         if not self.paused:
-            if not self.check_collision(dy=1):
-                self.current_piece.y += 1
-            else:
-                self.lock_piece()
+            now = pygame.time.get_ticks()
+            if now - self.last_drop_time >= self.drop_interval:
+                if not self.check_collision(dy=1):
+                    self.current_piece.y += 1
+                else:
+                    self.lock_piece()
+                self.last_drop_time = now
 
     def draw(self):
         self.screen.fill(BLACK)
         self.draw_grid()
 
     def tick(self):
-        self.clock.tick(2)
+        self.clock.tick(30)

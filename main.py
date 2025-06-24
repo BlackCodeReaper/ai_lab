@@ -9,15 +9,14 @@ from game.tetris import Tetris
 pygame.init()
 
 # Inizializza la webcam
-cam_width, cam_height = 800, 600
+cam_width, cam_height = 600, 480
 cam = cv2.VideoCapture(0)
 cam.set(3, cam_width)
 cam.set(4, cam_height)
-cam.set(cv2.CAP_PROP_FPS, 24)
 
 # Inizializza Pygame display accanto alla webcam
 WIN_WIDTH = cam_width + 300
-WIN_HEIGHT = cam_height
+WIN_HEIGHT = cam_height + 120
 screen = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
 pygame.display.set_caption("Tetris Gesture Control")
 

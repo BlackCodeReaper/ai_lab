@@ -20,7 +20,7 @@ class GestureRecognizer:
         self.motion_buffer = deque(maxlen=motion_buffer)
         self.last_static = None
         self.last_trigger_time = 0
-        self.motion_cooldown = 0.8
+        self.motion_cooldown = 0.5
         self.static_cooldown = 0.2
 
     def predict_static_gesture(self, landmarks):
@@ -81,8 +81,8 @@ class GestureRecognizer:
 
             # Zone
             left_zone = 0.33
-            right_zone = 0.66
-            down_threshold = 0.75
+            right_zone = 0.67
+            down_threshold = 0.70
 
             gesture_candidate = None
 
@@ -99,17 +99,18 @@ class GestureRecognizer:
                 self.last_trigger_time = now
                 self.last_static = None
 
-            # Gesti statici (pugno, OK, L)
+            # Gesti statici (pugno, OK, L, nessuno)
             elif static != self.last_static and now - self.last_trigger_time > self.static_cooldown:
                 gesture = static
                 self.last_static = static
                 self.last_trigger_time = now
 
             # Disegna le linee guida
-            third_width = w // 3
-            cv2.line(frame, (third_width, 0), (third_width, h), (255, 255, 0), 2)  # Linea verticale sinistra
-            cv2.line(frame, (2 * third_width, 0), (2 * third_width, h), (255, 255, 0), 2)  # Linea verticale destra
+            left_width = int(w * left_zone)
+            right_width = int(w * right_zone)
             center_bottom_y = int(h * down_threshold)
-            cv2.line(frame, (third_width, center_bottom_y), (2 * third_width, center_bottom_y), (255, 0, 255), 2)  # linea GIÙ
+            cv2.line(frame, (left_width, 0), (left_width, h), (255, 255, 0), 2)  # Linea verticale sinistra
+            cv2.line(frame, (right_width, 0), (right_width, h), (255, 255, 0), 2)  # Linea verticale destra
+            cv2.line(frame, (left_width, center_bottom_y), (right_width, center_bottom_y), (255, 0, 255), 2)  # linea GIÙ
 
         return frame, gesture

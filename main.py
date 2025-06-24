@@ -9,14 +9,24 @@ from game.tetris import Tetris
 pygame.init()
 
 # Inizializza la webcam
-cam_width, cam_height = 600, 480
 cam = cv2.VideoCapture(0)
-cam.set(3, cam_width)
-cam.set(4, cam_height)
+
+# Dimensioni native della webcam
+native_width = int(cam.get(cv2.CAP_PROP_FRAME_WIDTH))
+native_height = int(cam.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
+if native_width == 0 or native_height == 0:
+    native_width, native_height = 640, 480
+
+cam_width = native_width
+cam_height = native_height
+
+cam.set(cv2.CAP_PROP_FRAME_WIDTH, cam_width)
+cam.set(cv2.CAP_PROP_FRAME_HEIGHT, cam_height)
 
 # Inizializza Pygame display accanto alla webcam
-WIN_WIDTH = cam_width + 300
-WIN_HEIGHT = cam_height + 120
+WIN_WIDTH = max(cam_width + 300, 940)
+WIN_HEIGHT = max(cam_height, 600)
 screen = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
 pygame.display.set_caption("Tetris Gesture Control")
 
@@ -78,7 +88,7 @@ def main():
         # Disegna tutto
         screen.fill((0, 0, 0))
         screen.blit(webcam_surface, (0, 0))
-        screen.blit(tetris.screen, (cam_width, 0))
+        screen.blit(tetris.screen, (cam_width, cam_height // 4 if cam_height > 750 else 0))
         draw_overlay(screen, gesture)
         pygame.display.flip()
 

@@ -21,13 +21,37 @@ if native_width == 0 or native_height == 0:
 cam_width = native_width
 cam_height = native_height
 
+TETRIS_WIDTH = 300
+TETRIS_HEIGHT = 600
+
+win_width = max(cam_width + 300, 940)
+win_height = max(cam_height, 600)
+
+# Ottieni risoluzione dello schermo
+screen_info = pygame.display.Info()
+screen_width = screen_info.current_w
+screen_height = screen_info.current_h
+
+# Scala la finestra se troppo grande
+MAX_SCALE = 0.80
+if win_width > screen_width or win_height > screen_height:
+    scale = min(
+        screen_width / win_width,
+        screen_height / win_height,
+        MAX_SCALE
+    )
+    cam_width = int(native_width * scale)
+    cam_height = int(native_height * scale)
+    TETRIS_WIDTH = int(TETRIS_WIDTH * scale)
+    TETRIS_HEIGHT = int(TETRIS_HEIGHT * scale)
+    win_width = native_width + TETRIS_WIDTH
+    win_height = max(native_height, TETRIS_HEIGHT)
+
 cam.set(cv2.CAP_PROP_FRAME_WIDTH, cam_width)
 cam.set(cv2.CAP_PROP_FRAME_HEIGHT, cam_height)
 
 # Inizializza Pygame display accanto alla webcam
-WIN_WIDTH = max(cam_width + 300, 940)
-WIN_HEIGHT = max(cam_height, 600)
-screen = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
+screen = pygame.display.set_mode((win_width, win_height))
 pygame.display.set_caption("Tetris Gesture Control")
 
 # Crea oggetti

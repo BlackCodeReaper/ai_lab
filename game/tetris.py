@@ -65,7 +65,6 @@ class Tetromino:
 
 class Tetris:
     def __init__(self):
-        pygame.init()
         self.screen = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.clock = pygame.time.Clock()
         self.grid = [[BLACK for _ in range(GRID_WIDTH)] for _ in range(GRID_HEIGHT)]

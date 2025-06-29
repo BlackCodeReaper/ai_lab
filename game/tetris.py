@@ -68,6 +68,8 @@ class Tetris:
         self.screen = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.clock = pygame.time.Clock()
         self.grid = [[BLACK for _ in range(GRID_WIDTH)] for _ in range(GRID_HEIGHT)]
+        self.score = 0
+        self.start_time = pygame.time.get_ticks()
         self.drop_interval = 1000
         self.last_drop_time = pygame.time.get_ticks()
         self.current_piece = self.new_piece()
@@ -97,6 +99,7 @@ class Tetris:
                 if cell:
                     self.grid[self.current_piece.y + y][self.current_piece.x + x] = self.current_piece.color
         self.clear_lines()
+        self.score += 10
         self.current_piece = self.new_piece()
         if self.check_collision():
             self.game_over = True
@@ -106,6 +109,7 @@ class Tetris:
         lines_cleared = GRID_HEIGHT - len(new_grid)
         for _ in range(lines_cleared):
             new_grid.insert(0, [BLACK] * GRID_WIDTH)
+            self.score += 100
         self.grid = new_grid
 
     def move(self, dx, dy):
@@ -145,6 +149,22 @@ class Tetris:
                     py = (self.current_piece.y + y) * BLOCK_SIZE
                     pygame.draw.rect(self.screen, self.current_piece.color, (px, py, BLOCK_SIZE, BLOCK_SIZE))
                     pygame.draw.rect(self.screen, GRAY, (px, py, BLOCK_SIZE, BLOCK_SIZE), 1)
+
+    def draw_info_bar(self, surface):
+        font = pygame.font.SysFont("Arial", 22)
+        
+        elapsed_time = (pygame.time.get_ticks() - self.start_time) // 1000
+        minutes = elapsed_time // 60
+        seconds = elapsed_time % 60
+
+        text_color = (255, 255, 255)
+        surface.fill((30, 30, 30))  # sfondo grigio scuro
+
+        score_text = font.render(f"Punteggio: {self.score}", True, text_color)
+        time_text = font.render(f"Tempo: {minutes:02}:{seconds:02}", True, text_color)
+
+        surface.blit(score_text, (10, 10))
+        surface.blit(time_text, (10, 50))
 
     def run_frame(self, key_events):
         if self.game_over:

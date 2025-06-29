@@ -109,10 +109,19 @@ def main():
         tetris.run_frame(events)
         tetris.draw()
 
+        # Barra info
+        info_surface = pygame.Surface((TETRIS_WIDTH, 100))
+        tetris.draw_info_bar(info_surface)
+
+        # Calcola gli offset di cam e tetris
+        cam_offset = (win_height - cam_height) // 2
+        tetris_offset = (win_height - TETRIS_HEIGHT) // 2
+
         # Disegna tutto
         screen.fill((0, 0, 0))
-        screen.blit(webcam_surface, (0, 0))
-        screen.blit(tetris.screen, (cam_width, cam_height // 4 if cam_height > 750 else 0))
+        screen.blit(webcam_surface, (0, cam_offset))
+        screen.blit(tetris.screen, (cam_width, tetris_offset))
+        screen.blit(info_surface, (cam_width, tetris_offset + TETRIS_HEIGHT))
         draw_overlay(screen, gesture)
         pygame.display.flip()
 

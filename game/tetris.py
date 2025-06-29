@@ -68,6 +68,7 @@ class Tetris:
         self.screen = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.clock = pygame.time.Clock()
         self.grid = [[BLACK for _ in range(GRID_WIDTH)] for _ in range(GRID_HEIGHT)]
+        self.dropped_pieces = 0
         self.score = 0
         self.start_time = pygame.time.get_ticks()
         self.drop_interval = 1000
@@ -77,6 +78,7 @@ class Tetris:
         self.paused = False
 
     def new_piece(self):
+        self.dropped_pieces += 1
         index = random.randint(0, len(SHAPES) - 1)
         return Tetromino(SHAPES[index], SHAPE_COLORS[index])
 
@@ -151,7 +153,7 @@ class Tetris:
                     pygame.draw.rect(self.screen, GRAY, (px, py, BLOCK_SIZE, BLOCK_SIZE), 1)
 
     def draw_info_bar(self, surface):
-        font = pygame.font.SysFont("Arial", 22)
+        font = pygame.font.SysFont("Menlo", 22)
         
         elapsed_time = (pygame.time.get_ticks() - self.start_time) // 1000
         minutes = elapsed_time // 60
@@ -161,10 +163,12 @@ class Tetris:
         surface.fill((30, 30, 30))  # sfondo grigio scuro
 
         score_text = font.render(f"Punteggio: {self.score}", True, text_color)
+        pieces_text = font.render(f"Pezzi caduti: {self.dropped_pieces}", True, text_color)
         time_text = font.render(f"Tempo: {minutes:02}:{seconds:02}", True, text_color)
 
         surface.blit(score_text, (10, 10))
-        surface.blit(time_text, (10, 50))
+        surface.blit(pieces_text, (10, 50))
+        surface.blit(time_text, (10, 90))
 
     def run_frame(self, key_events):
         if self.game_over:

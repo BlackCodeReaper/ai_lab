@@ -115,7 +115,7 @@ def main():
 
         # Calcola gli offset di cam e tetris
         cam_offset = (win_height - cam_height) // 2
-        tetris_offset = (win_height - (TETRIS_HEIGHT + 130)) // 2
+        tetris_offset = (win_height - (TETRIS_HEIGHT + 40)) // 2
 
         # Disegna tutto
         screen.fill((0, 0, 0))

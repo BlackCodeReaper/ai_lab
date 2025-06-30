@@ -2,8 +2,8 @@
 
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import classification_report
+from sklearn.model_selection import cross_val_score, StratifiedKFold
+import numpy as np
 import joblib
 import os
 
@@ -20,24 +20,23 @@ def main():
     X = df.drop("label", axis=1)
     y = df["label"]
 
-    # Divisione train/test
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
     # Modello Random Forest
     clf = RandomForestClassifier(n_estimators=100, random_state=42)
-    clf.fit(X_train, y_train)
+    cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
 
-    # Valutazione
-    y_pred = clf.predict(X_test)
+    scores = cross_val_score(clf, X, y, cv=cv)
+
     print("\n== REPORT ==")
-    print(classification_report(y_test, y_pred))
+    print("Accuracy per ogni fold:", scores)
+    print("Media:", np.mean(scores))
+    print("Deviazione standard:", np.std(scores))
 
     # Salvataggio modello
     if not os.path.exists("model"):
         os.makedirs("model")
 
     joblib.dump(clf, MODEL_PATH)
-    print(f"[✓] Modello salvato in {MODEL_PATH}")
+    print(f"\n[✓] Modello salvato in {MODEL_PATH}")
 
 if __name__ == "__main__":
     main()

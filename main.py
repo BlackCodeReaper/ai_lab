@@ -110,7 +110,7 @@ def main():
         tetris.draw()
 
         # Barra info
-        info_surface = pygame.Surface((TETRIS_WIDTH, 130))
+        info_surface = pygame.Surface((TETRIS_WIDTH, 40))
         tetris.draw_info_bar(info_surface)
 
         # Calcola gli offset di cam e tetris

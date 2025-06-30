@@ -81,6 +81,14 @@ class Tetris:
         self.dropped_pieces += 1
         index = random.randint(0, len(SHAPES) - 1)
         return Tetromino(SHAPES[index], SHAPE_COLORS[index])
+    
+    def restart(self):
+        self.grid = [[BLACK for _ in range(GRID_WIDTH)] for _ in range(GRID_HEIGHT)]
+        self.current_piece = self.new_piece()
+        self.game_over = False
+        self.paused = False
+        self.start_time = pygame.time.get_ticks()
+        self.score = 0
 
     def check_collision(self, dx=0, dy=0, shape=None):
         shape = shape or self.current_piece.shape
@@ -162,13 +170,10 @@ class Tetris:
         text_color = (255, 255, 255)
         surface.fill((30, 30, 30))  # sfondo grigio scuro
 
-        score_text = font.render(f"Punteggio: {self.score}", True, text_color)
-        pieces_text = font.render(f"Pezzi caduti: {self.dropped_pieces}", True, text_color)
-        time_text = font.render(f"Tempo: {minutes:02}:{seconds:02}", True, text_color)
+        stats_text = font.render(f"{self.dropped_pieces} {self.score} {minutes:02}:{seconds:02}", True, text_color)
+        surface.blit(stats_text, (10, 10))
 
-        surface.blit(score_text, (10, 10))
-        surface.blit(pieces_text, (10, 50))
-        surface.blit(time_text, (10, 90))
+        
 
     def run_frame(self, key_events):
         if self.game_over:

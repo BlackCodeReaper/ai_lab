@@ -29,7 +29,7 @@ TETRIS_HEIGHT = 600
 
 # Calcolo finestra iniziale
 win_width = cam_width + TETRIS_WIDTH
-win_height = max(cam_height, TETRIS_HEIGHT)
+win_height = max(cam_height, TETRIS_HEIGHT + 40)
 
 # Ottieni risoluzione schermo
 screen_info = pygame.display.Info()

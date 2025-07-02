@@ -3,7 +3,7 @@
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split, cross_val_score, StratifiedKFold
-from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, log_loss
 from sklearn.manifold import TSNE
 from sklearn.preprocessing import LabelEncoder
 import matplotlib.patches as mpatches
@@ -39,11 +39,10 @@ def main():
     print("Media:", np.mean(scores))
     print("Deviazione standard:", np.std(scores))
 
-    # Grafico cumulative accuracy
-    # cumulative_avg = np.cumsum(scores) / (np.arange(len(scores)) + 1)
+    # Grafico accuracy per fold
     plt.figure(figsize=(8, 5))
     plt.plot(range(1, len(scores)+1), scores, marker='o', linestyle='--')
-    plt.title("Andamento della Accuracy Cumulativa per Fold")
+    plt.title("Andamento della Accuracy per Fold")
     plt.xlabel("Fold #")
     plt.ylabel("Accuracy")
     plt.grid(True)
@@ -51,11 +50,55 @@ def main():
     plt.ylim(0.99, 1)
     plt.show()
 
+    # Grafico cumulative accuracy
+    cumulative_avg = np.cumsum(scores) / (np.arange(len(scores)) + 1)
+    plt.figure(figsize=(8, 5))
+    plt.plot(range(1, len(scores)+1), cumulative_avg, marker='o', linestyle='--')
+    plt.title("Andamento della media dell'accuracy per Fold")
+    plt.xlabel("Fold #")
+    plt.ylabel("Media accuracy")
+    plt.grid(True)
+    plt.xticks(range(1, len(scores)+1))
+    plt.ylim(0.99, 1)
+    plt.show()
+
+    # Grafico cumulative accuracy
+    cumulative_std = [np.std(scores[:i+1]) for i in range(len(scores))]
+    plt.figure(figsize=(8, 5))
+    plt.plot(range(1, len(scores)+1), cumulative_std, marker='o', linestyle='--')
+    plt.title("Andamento della Deviazione standard per Fold")
+    plt.xlabel("Fold #")
+    plt.ylabel("Deviazione standard")
+    plt.grid(True)
+    plt.xticks(range(1, len(scores)+1))
+    plt.ylim(0, 0.003)
+    plt.show()
+    
+    loss_scores = cross_val_score(clf, X_train, y_train, cv=cv, scoring='neg_log_loss')
+    loss_scores = -loss_scores  # perché scikit-learn restituisce valori negativi
+
+    plt.figure(figsize=(8, 5))
+    plt.plot(range(1, len(loss_scores)+1), loss_scores, marker='o', linestyle='--')
+    plt.title("Log Loss per Fold")
+    plt.xlabel("Fold #")
+    plt.ylabel("Log Loss")
+    plt.grid(True)
+    plt.show()
+
     # Fit finale su tutti i dati di training
     model = RandomForestClassifier(n_estimators=100, random_state=42)
     model.fit(X_train, y_train)
 
     test_accuracy = model.score(X_test, y_test)
+    train_accuracy = model.score(X_train, y_train)
+
+    plt.figure(figsize=(6, 4))
+    plt.bar(['Training Set', 'Test Set'], [train_accuracy, test_accuracy], color=['skyblue', 'orange'])
+    plt.title('Accuracy del Modello Finale')
+    plt.ylabel('Accuracy')
+    plt.grid(axis='y')
+    plt.ylim(0.99, 1.0)
+    plt.show()
     print("Accuracy sul test set:", test_accuracy)
 
     # Confusion Matrix

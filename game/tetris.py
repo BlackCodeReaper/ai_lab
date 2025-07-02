@@ -170,7 +170,7 @@ class Tetris:
         text_color = (255, 255, 255)
         surface.fill((30, 30, 30))  # sfondo grigio scuro
 
-        stats_text = font.render(f"{self.dropped_pieces} {self.score} {minutes:02}:{seconds:02}", True, text_color)
+        stats_text = font.render(f"{self.dropped_pieces}    {self.score}    {minutes:02}:{seconds:02}", True, text_color)
         surface.blit(stats_text, (10, 10))
 
         

@@ -26,11 +26,11 @@ def main():
     y = df["label"]
 
     # Divisione train/test
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, stratify=y, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, stratify=y, random_state=53)
 
     # Modello Random Forest e cross-validation
-    clf = RandomForestClassifier(n_estimators=100, random_state=42)
-    cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+    clf = RandomForestClassifier(n_estimators=100, random_state=53)
+    cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=53)
 
     scores = cross_val_score(clf, X_train, y_train, cv=cv)
 
@@ -42,7 +42,7 @@ def main():
     # Grafico accuracy per fold
     plt.figure(figsize=(8, 5))
     plt.plot(range(1, len(scores)+1), scores, marker='o', linestyle='--')
-    plt.title("Andamento della Accuracy per Fold")
+    plt.title("Accuracy trend per fold")
     plt.xlabel("Fold #")
     plt.ylabel("Accuracy")
     plt.grid(True)
@@ -54,9 +54,9 @@ def main():
     cumulative_avg = np.cumsum(scores) / (np.arange(len(scores)) + 1)
     plt.figure(figsize=(8, 5))
     plt.plot(range(1, len(scores)+1), cumulative_avg, marker='o', linestyle='--')
-    plt.title("Andamento della media dell'accuracy per Fold")
+    plt.title("trend of average accuracy per fold")
     plt.xlabel("Fold #")
-    plt.ylabel("Media accuracy")
+    plt.ylabel("Accuracy average")
     plt.grid(True)
     plt.xticks(range(1, len(scores)+1))
     plt.ylim(0.99, 1)
@@ -66,9 +66,9 @@ def main():
     cumulative_std = [np.std(scores[:i+1]) for i in range(len(scores))]
     plt.figure(figsize=(8, 5))
     plt.plot(range(1, len(scores)+1), cumulative_std, marker='o', linestyle='--')
-    plt.title("Andamento della Deviazione standard per Fold")
+    plt.title("Trend of standard deviation per fold")
     plt.xlabel("Fold #")
-    plt.ylabel("Deviazione standard")
+    plt.ylabel("Standard deviation")
     plt.grid(True)
     plt.xticks(range(1, len(scores)+1))
     plt.ylim(0, 0.003)
@@ -79,14 +79,14 @@ def main():
 
     plt.figure(figsize=(8, 5))
     plt.plot(range(1, len(loss_scores)+1), loss_scores, marker='o', linestyle='--')
-    plt.title("Log Loss per Fold")
+    plt.title("Log loss per fold")
     plt.xlabel("Fold #")
-    plt.ylabel("Log Loss")
+    plt.ylabel("Log loss")
     plt.grid(True)
     plt.show()
 
     # Fit finale su tutti i dati di training
-    model = RandomForestClassifier(n_estimators=100, random_state=42)
+    model = RandomForestClassifier(n_estimators=100, random_state=53)
     model.fit(X_train, y_train)
 
     test_accuracy = model.score(X_test, y_test)
@@ -94,7 +94,7 @@ def main():
 
     plt.figure(figsize=(6, 4))
     plt.bar(['Training Set', 'Test Set'], [train_accuracy, test_accuracy], color=['skyblue', 'orange'])
-    plt.title('Accuracy del Modello Finale')
+    plt.title('Final model accuracy')
     plt.ylabel('Accuracy')
     plt.grid(axis='y')
     plt.ylim(0.99, 1.0)
@@ -110,11 +110,11 @@ def main():
     le.fit(y)
     disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=le.classes_)
     disp.plot()
-    plt.title("Confusion Matrix sul Test Set")
+    plt.title("Confusion Matrix on Test Set")
     plt.show()
 
     # Visualizzazione t-SNE (solo sul test set per semplicità)
-    tsne = TSNE(n_components=2, random_state=42)
+    tsne = TSNE(n_components=2, random_state=53)
     X_test_2d = tsne.fit_transform(X_test)
 
     # Encoding label per il colore
@@ -122,15 +122,15 @@ def main():
 
     plt.figure(figsize=(8, 6))
     scatter = plt.scatter(X_test_2d[:, 0], X_test_2d[:, 1], c=y_test_encoded, cmap='tab10', alpha=0.7)
-    plt.title("Visualizzazione t-SNE (Test Set)")
-    plt.xlabel("Dimensione 1")
-    plt.ylabel("Dimensione 2")
+    plt.title("t-SNE Visualization (Test Set)")
+    plt.xlabel("x")
+    plt.ylabel("y")
 
     # Legenda
     colors = [scatter.cmap(scatter.norm(i)) for i in range(len(le.classes_))]
     handles = [mpatches.Patch(color=colors[i], label=le.classes_[i])
                for i in range(len(le.classes_))]
-    plt.legend(handles=handles, title="Classi")
+    plt.legend(handles=handles, title="Class")
     plt.show()
 
     # Salvataggio modello

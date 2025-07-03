@@ -102,8 +102,8 @@ python main.py
 
 ## 🧠 Suggerimenti
 
-- Mantieni la mano ben visibile al centro della webcam
-- Raccogli i dati in condizioni di luce costante
+- Mantieni la mano ben visibile nella webcam
+- Raccogli i dati in condizioni variabili
 - Durante il gioco evita gesti misti: uno alla volta
 
 Buon divertimento! 🎉
